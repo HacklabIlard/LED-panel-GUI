@@ -42,26 +42,17 @@ app.get("/clear", (req, res) => {
 
 app.post("/send", (req, res) => {
   
-  let bytes = ""
-  let byte = ""
+  let bytes = new Array()
+  let byte = new Array()
 
   req.body.leds.forEach(led => {
 
-    /** Start temp */
-    switch (led) {
-      case "0,0,0" :
-        byte = led.replace("0,0,0", "aaa")
-        break
-      case "241,196,15" :
-        byte = led.replace("241,196,15", "aza")
-        break
-    } 
-    /** End temp */
-    
-    bytes += byte
+    byte = led.split(",");
+  
+    bytes.concat(byte)
   });
 
-  serial.write(Buffer.from(bytes, 'utf-8'), (err) => {
+  serial.write(Buffer.from(bytes), (err) => {
     if (err) return console.log(err.message)
   })
 
